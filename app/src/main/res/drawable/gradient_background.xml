@@ -4,6 +4,7 @@
         android:endColor="#abdbef"
         android:centerColor="#abdbef"
         android:startColor="#f1e7d8"
+        android:alpha="0.8"
         android:angle="90"/>
     <padding android:left="7dp"
         android:top="7dp"

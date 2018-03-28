@@ -4,13 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="#FFF"
+    style="@style/AppThemes"
     tools:context="ia2.moduleproject.eniso.ishare.Activities.HomeActivity">
 
-
+<LinearLayout
+    android:id="@+id/ln_ishare"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp">
+  <ImageView
+      android:src="@drawable/ishare_logo"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent" />
+</LinearLayout>
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/ln_ishare"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"/>
+        android:scrollbars="none"
+        />
 </RelativeLayout>
