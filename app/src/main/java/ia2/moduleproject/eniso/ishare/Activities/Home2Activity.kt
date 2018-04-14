@@ -18,6 +18,15 @@ import kotlinx.android.synthetic.main.layout_center_viewpager.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
+//import javax.swing.text.StyleConstants.setIcon
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
+import ia2.moduleproject.eniso.ishare.Fragment.MessagesFragment
+import ia2.moduleproject.eniso.ishare.Fragment.HomeFragment
+import ia2.moduleproject.eniso.ishare.Fragment.CameraFragment
+import ia2.moduleproject.eniso.ishare.SectionsPagerAdapter
+
+
 
 
 class Home2Activity : AppCompatActivity() {
@@ -35,6 +44,7 @@ class Home2Activity : AppCompatActivity() {
         Log.d(TAG, "onCreate: starting.")
 
         setupBottomNavigationView()
+        setupViewPager()
         loadLost()
 
         var layoutManager = LinearLayoutManager(this@Home2Activity)
@@ -134,6 +144,27 @@ class Home2Activity : AppCompatActivity() {
 
         Volley.newRequestQueue(this).add(jsonObjReq)
     }
+
+
+    /**
+     * Responsible for adding the 3 tabs: Camera, Home, Messages
+     */
+    private fun setupViewPager() {
+        val adapter = SectionsPagerAdapter(supportFragmentManager)
+        adapter.addFragment(CameraFragment()) //index 0
+        adapter.addFragment(HomeFragment()) //index 1
+        adapter.addFragment(MessagesFragment()) //index 2
+        val viewPager = findViewById<View>(R.id.container) as ViewPager
+        viewPager.adapter = adapter
+
+        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
+        tabLayout.setupWithViewPager(viewPager)
+
+        tabLayout.getTabAt(0)!!.setIcon(R.drawable.ic_camera)
+        tabLayout.getTabAt(1)!!.setIcon(R.drawable.ishare_logo)
+        tabLayout.getTabAt(2)!!.setIcon(R.drawable.ic_arrow)
+    }
+
     /**
      * BottomNavigationView setup
      */

@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ia2.moduleproject.eniso.ishare.Activities.Home2Activity">
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
@@ -31,7 +30,6 @@
             android:layout_below="@+id/relLayout1">
 
             <include layout="@layout/layout_center_viewpager"/>
-
 
 
         </RelativeLayout>
