@@ -13,7 +13,7 @@
         android:roundIcon="@drawable/ishare_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.LoginActivity"></activity>
+        <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.SpalshScreen">
 
@@ -24,11 +24,12 @@
         <!-- <activity android:name=".Activities.ShareActivity"></activity> -->
         <activity android:name=".Activities.Home2Activity">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:name=".Activities.AccountSettings"></activity>
     </application>
 
 </manifest>

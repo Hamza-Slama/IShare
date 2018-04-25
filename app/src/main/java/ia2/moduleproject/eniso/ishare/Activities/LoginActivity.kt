@@ -14,8 +14,11 @@ import android.widget.Toast
 import ia2.moduleproject.eniso.ishare.R
 import kotlinx.android.synthetic.main.activity_main.*
 import android.graphics.Bitmap
+import android.util.Base64
+import com.nostra13.universalimageloader.core.ImageLoader
 import ia2.moduleproject.eniso.ishare.Constants.MyUserLoginAndPassword
-import java.io.IOException
+import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
+import java.io.ByteArrayOutputStream
 
 
 class LoginActivity : AppCompatActivity() {
@@ -25,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         getLoginUser()
-
+        initImageLoader()
         imageViewPerso.setOnClickListener { checkPermission() }
 
         loginBtn.setOnClickListener {
@@ -34,6 +37,12 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
+    }
+
+
+    private fun initImageLoader() {
+        val universalImageLoader = UniversalImageLoader(this)
+        ImageLoader.getInstance().init(universalImageLoader.config)
     }
 
     //checkPermission is a Function that check if we can acess to the storage or not
@@ -85,7 +94,8 @@ class LoginActivity : AppCompatActivity() {
             val coulomIndex = cursor.getColumnIndex(filePathColum[0])
             val picturePath = cursor.getString(coulomIndex)
             cursor.close()
-            imageViewPerso.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+            //UniversalImageLoader.setImage(BitMapToString(BitmapFactory.decodeFile(picturePath)), imageViewPerso!!, null, "")
+           imageViewPerso.setImageBitmap(BitmapFactory.decodeFile(picturePath))
         }
     }
 
@@ -115,6 +125,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    fun BitMapToString(bitmap: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
 
 }
 

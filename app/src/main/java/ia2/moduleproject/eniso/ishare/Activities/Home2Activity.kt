@@ -21,12 +21,12 @@ import java.io.UnsupportedEncodingException
 //import javax.swing.text.StyleConstants.setIcon
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import com.nostra13.universalimageloader.core.ImageLoader
 import ia2.moduleproject.eniso.ishare.Fragment.MessagesFragment
 import ia2.moduleproject.eniso.ishare.Fragment.HomeFragment
 import ia2.moduleproject.eniso.ishare.Fragment.CameraFragment
 import ia2.moduleproject.eniso.ishare.SectionsPagerAdapter
-
-
+import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
 
 
 class Home2Activity : AppCompatActivity() {
@@ -42,18 +42,21 @@ class Home2Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
         Log.d(TAG, "onCreate: starting.")
-
+        initImageLoader()
         setupBottomNavigationView()
         setupViewPager()
-        loadLost()
+//        loadLost()
 
-        var layoutManager = LinearLayoutManager(this@Home2Activity)
-        recycler_view_viewpager.layoutManager = layoutManager
-        costomAdapter = LostAdapter(lostList)
-        recycler_view_viewpager.adapter = costomAdapter
+//        var layoutManager = LinearLayoutManager(this@Home2Activity)
+//        recycler_view_viewpager.layoutManager = layoutManager
+//        costomAdapter = LostAdapter(lostList)
+//        recycler_view_viewpager.adapter = costomAdapter
     }
 
-
+    private fun initImageLoader() {
+        val universalImageLoader = UniversalImageLoader(mContext)
+        ImageLoader.getInstance().init(universalImageLoader.config)
+    }
     private fun loadLost() {
         val url2 = "http://api.tvmaze.com/singlesearch/shows?q=lost&embed=episodes"
 

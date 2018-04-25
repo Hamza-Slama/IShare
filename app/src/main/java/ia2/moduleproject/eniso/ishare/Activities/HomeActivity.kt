@@ -2,6 +2,7 @@ package ia2.moduleproject.eniso.ishare.Activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import ia2.moduleproject.eniso.ishare.R
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -26,7 +27,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         loadLost()
 
-        var layoutManager = LinearLayoutManager(this@HomeActivity)
+        var layoutManager = GridLayoutManager(this@HomeActivity,3)
         recycler_view.layoutManager = layoutManager
         costomAdapter = LostAdapter(lostList)
         recycler_view.adapter = costomAdapter
