@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+import com.nostra13.universalimageloader.core.ImageLoader
 import ia2.moduleproject.eniso.ishare.R
 import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
+import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
 
 class ShareActivity : AppCompatActivity() {
     private val TAG = "ShareActivity"
@@ -18,7 +20,7 @@ class ShareActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home2)
         Log.d(TAG, "onCreate: starting.")
-
+        initImageLoader()
         setupBottomNavigationView()
     }
 
@@ -33,5 +35,10 @@ class ShareActivity : AppCompatActivity() {
         val menu = bottomNavigationViewEx.menu
         val menuItem = menu.getItem(ACTIVITY_NUM)
         menuItem.isChecked = true
+    }
+
+    private fun initImageLoader() {
+        val universalImageLoader = UniversalImageLoader(mContext)
+        ImageLoader.getInstance().init(universalImageLoader.config)
     }
 }

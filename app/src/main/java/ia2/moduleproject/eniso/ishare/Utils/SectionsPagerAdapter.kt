@@ -6,9 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter
 
 import java.util.ArrayList
 
-/**
- * Created by User on 5/28/2017.
- */
 
 /**
  * Class that stores fragments for tabs

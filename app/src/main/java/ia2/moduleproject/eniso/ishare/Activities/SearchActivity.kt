@@ -10,7 +10,7 @@ import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 
 class SearchActivity : AppCompatActivity() {
     private val TAG = "SearchActivity"
-    private val ACTIVITY_NUM = 1
+    private val ACTIVITY_NUM = 2
 
     private val mContext = this@SearchActivity
 

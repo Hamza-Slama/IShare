@@ -40,8 +40,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/icon_person"
                 android:alpha="1"
+                android:src="@drawable/icon_person"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="2dp" />
 
@@ -50,8 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imageViewPerso"
-                android:alpha="1"
                 android:layout_marginTop="19dp"
+                android:alpha="1"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_person"
                 android:drawablePadding="12dp"
@@ -60,7 +60,7 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:padding="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
 
             <View
@@ -72,12 +72,12 @@
 
 
             <EditText
-                android:alpha="1"
                 android:id="@+id/pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view1"
                 android:layout_marginTop="4dp"
+                android:alpha="1"
                 android:background="@android:color/transparent"
                 android:drawableLeft="@drawable/ic_lock"
                 android:drawablePadding="12dp"
@@ -89,7 +89,7 @@
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingTop="8dp"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
 
             <View
                 android:id="@+id/view2"
@@ -100,12 +100,12 @@
 
 
             <CheckBox
-                android:alpha="1"
                 android:id="@+id/remember_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view2"
                 android:layout_marginTop="8dp"
+                android:alpha="1"
                 android:background="@android:color/transparent"
                 android:buttonTint="#FFFFFF"
                 android:padding="8dp"
@@ -114,12 +114,12 @@
 
             <Button
                 android:id="@+id/loginBtn"
-                android:alpha="1"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/remember_me"
+                android:alpha="1"
                 android:background="@drawable/background_login"
                 android:clickable="true"
                 android:padding="16dp"
@@ -129,7 +129,16 @@
                 android:textSize="18sp"
                 android:textStyle="normal" />
 
-
+            <TextView
+                android:id="@+id/link_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginBtn"
+                android:layout_marginBottom="25dp"
+                android:gravity="center"
+                android:text="No account yet? Create one"
+                android:textColor="@color/purple"
+                android:textSize="16dp" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

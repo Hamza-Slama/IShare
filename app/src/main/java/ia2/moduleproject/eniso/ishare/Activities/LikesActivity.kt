@@ -10,16 +10,16 @@ import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 
 class LikesActivity : AppCompatActivity() {
     private val TAG = "LikesActivity"
-    private val ACTIVITY_NUM = 3
+    private val ACTIVITY_NUM = 1
 
     private val mContext = this@LikesActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home2)
+        setContentView(R.layout.add_ticket)
         Log.d(TAG, "onCreate: starting.")
 
-        setupBottomNavigationView()
+       setupBottomNavigationView()
     }
 
     /**

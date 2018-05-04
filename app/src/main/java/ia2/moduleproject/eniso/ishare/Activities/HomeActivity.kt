@@ -12,6 +12,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import ia2.moduleproject.eniso.ishare.Adapter.LostAdapter
 import ia2.moduleproject.eniso.ishare.Model.Lost
+import ia2.moduleproject.eniso.ishare.Utils.SaveSettings
 import kotlinx.android.synthetic.main.activity_home.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -24,10 +25,15 @@ class HomeActivity : AppCompatActivity() {
     private val lostList = ArrayList<Lost>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val saveSettings= SaveSettings(this)
+        saveSettings.loadSettings()
+
         setContentView(R.layout.activity_home)
         loadLost()
 
-        var layoutManager = GridLayoutManager(this@HomeActivity,3)
+//        var layoutManager = GridLayoutManager(this@HomeActivity,3)
+        var layoutManager = LinearLayoutManager(this@HomeActivity)
         recycler_view.layoutManager = layoutManager
         costomAdapter = LostAdapter(lostList)
         recycler_view.adapter = costomAdapter

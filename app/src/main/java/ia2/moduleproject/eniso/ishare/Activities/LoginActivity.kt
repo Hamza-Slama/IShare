@@ -1,6 +1,7 @@
 package ia2.moduleproject.eniso.ishare.Activities
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,7 +13,7 @@ import android.provider.MediaStore
 import android.support.v4.app.ActivityCompat
 import android.widget.Toast
 import ia2.moduleproject.eniso.ishare.R
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_login.*
 import android.graphics.Bitmap
 import android.util.Base64
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -21,21 +22,42 @@ import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
 import java.io.ByteArrayOutputStream
 
 
+import android.os.AsyncTask
+import ia2.moduleproject.eniso.ishare.Utils.SaveSettings
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+
 class LoginActivity : AppCompatActivity() {
     private val Pick_code_image = 123
     private val READIMAGE: Int = 253
+    val activity= this
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
         getLoginUser()
         initImageLoader()
         imageViewPerso.setOnClickListener { checkPermission() }
 
         loginBtn.setOnClickListener {
-            RememberMe()
-            Intent(this, HomeActivity::class.java).apply {
-                startActivity(this)
-            }
+//            RememberMe()
+//            Intent(this, HomeActivity::class.java).apply {
+//                startActivity(this)
+//            }
+
+         //   val url = "http://192.168.1.64/IshareServer/Login.php?email=c@yahoo.com&password=1234567"
+            val url="http://192.168.1.64/IshareServer/Login.php?email=" + user.text.toString() +"&password="+ pass.text.toString()
+            MyAsyncTask().execute(url)
+        }
+
+        link_signup.setOnClickListener {
+            val intent = Intent(this,RegisterActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -132,9 +154,95 @@ class LoginActivity : AppCompatActivity() {
         return Base64.encodeToString(b, Base64.DEFAULT)
     }
 
+
+
+
+inner class MyAsyncTask: AsyncTask<String, String, String>() {
+    lateinit var progressDialog: ProgressDialog
+    override fun onPreExecute() {
+        //Before task started
+        progressDialog = ProgressDialog(activity)
+        progressDialog.setMessage("Downloading Data ...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+    }
+    override fun doInBackground(vararg p0: String?): String {
+        try {
+
+            val url= URL(p0[0])
+
+            val urlConnect=url.openConnection() as HttpURLConnection
+            urlConnect.connectTimeout=7000
+            val op=Operations()
+            var inString= op.ConvertStreamToString(urlConnect.inputStream)
+            //Cannot access to ui
+            publishProgress(inString)
+        }catch (ex:Exception){}
+
+
+        return " "
+
+    }
+
+    override fun onProgressUpdate(vararg values: String?) {
+        try{
+            var json= JSONObject(values[0])
+
+
+            if (json.getString("msg")== "pass login"){
+                val userInfo =JSONArray(json.getString("info"))
+                val userCredentails= userInfo.getJSONObject(0)
+
+                Toast.makeText(applicationContext,userCredentails.getString("first_name"), Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,userCredentails.toString(), Toast.LENGTH_LONG).show()
+
+                val user_id= userCredentails.getString("user_id")
+                val saveSettings= SaveSettings(applicationContext)
+                saveSettings.saveSettings(user_id)
+                val intent = Intent(activity,Home2Activity::class.java)
+                startActivity(intent)
+
+                finish()
+            }else{
+                Toast.makeText(applicationContext,json.getString("msg"), Toast.LENGTH_LONG).show()
+            }
+
+        }catch (ex:Exception){}
+    }
+
+    override fun onPostExecute(result: String?) {
+        progressDialog.dismiss()
+        //after task done
+    }
+
+
 }
 
+inner  class Operations{
 
+    fun ConvertStreamToString(inputStream: InputStream):String{
+
+        val bufferReader= BufferedReader(InputStreamReader(inputStream))
+        var line:String
+        var AllString:String=""
+
+        try {
+            do{
+                line=bufferReader.readLine()
+                if(line!=null){
+                    AllString+=line
+                }
+            }while (line!=null)
+            inputStream.close()
+        }catch (ex:Exception){}
+
+
+
+        return AllString
+    }
+
+}
+}
 /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
          super.onActivityResult(requestCode, resultCode, data)
 

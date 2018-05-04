@@ -21,6 +21,7 @@ import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.nostra13.universalimageloader.core.ImageLoader
 import ia2.moduleproject.eniso.ishare.Adapter.LostAdapter
 import ia2.moduleproject.eniso.ishare.Model.Lost
 import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
@@ -40,7 +41,7 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private val TAG = "ProfileActivity"
-    private val ACTIVITY_NUM = 4
+    private val ACTIVITY_NUM = 3
 
 
     private val mContext = this@ProfileActivity
@@ -52,6 +53,7 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         Log.d(TAG, "onCreate: starting.")
 //        profileProgressBar!!.visibility = View.GONE
+        initImageLoader()
         setupBottomNavigationView()
         setupToolbar()
         setupActivityWidgets()
@@ -250,6 +252,10 @@ class ProfileActivity : AppCompatActivity() {
 //
 //        Volley.newRequestQueue(this).add(jsonObjReq)
 //    }
+private fun initImageLoader() {
+    val universalImageLoader = UniversalImageLoader(mContext)
+    ImageLoader.getInstance().init(universalImageLoader.config)
+}
     companion object {
     private val NUM_GRID_COLUMNS = 3
     }

@@ -7,9 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import java.util.ArrayList
 import java.util.HashMap
 
-/**
- * Created by User on 6/4/2017.
- */
 
 class SectionsStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 

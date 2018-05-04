@@ -9,9 +9,6 @@ import android.view.ViewGroup
 import ia2.moduleproject.eniso.ishare.R
 
 
-/**
- * Created by User on 5/28/2017.
- */
 
 class MessagesFragment : Fragment() {
 

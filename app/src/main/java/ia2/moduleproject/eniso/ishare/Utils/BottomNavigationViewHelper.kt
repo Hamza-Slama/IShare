@@ -44,23 +44,25 @@ object BottomNavigationViewHelper {
                     context.startActivity(intent1)
                 }
 
-                R.id.ic_search -> {
-                    val intent2 = Intent(context, SearchActivity::class.java)//ACTIVITY_NUM = 1
-                    context.startActivity(intent2)
-                }
 
-                R.id.ic_circle -> {
-                    val intent3 = Intent(context, ShareActivity::class.java)//ACTIVITY_NUM = 2
-                    context.startActivity(intent3)
-                }
+
+//                R.id.ic_circle -> {
+//                    val intent3 = Intent(context, ShareActivity::class.java)//ACTIVITY_NUM = 2
+//                    context.startActivity(intent3)
+//                }
 
                 R.id.ic_alert -> {
-                    val intent4 = Intent(context, LikesActivity::class.java)//ACTIVITY_NUM = 3
+                    val intent4 = Intent(context, LikesActivity::class.java)//ACTIVITY_NUM = 1
                     context.startActivity(intent4)
                 }
 
+                R.id.ic_search -> {
+                    val intent2 = Intent(context, SearchActivity::class.java)//ACTIVITY_NUM = 2
+                    context.startActivity(intent2)
+                }
+
                 R.id.ic_android -> {
-                    val intent5 = Intent(context, ProfileActivity::class.java)//ACTIVITY_NUM = 4
+                    val intent5 = Intent(context, ProfileActivity::class.java)//ACTIVITY_NUM = 3
                     context.startActivity(intent5)
                 }
             }

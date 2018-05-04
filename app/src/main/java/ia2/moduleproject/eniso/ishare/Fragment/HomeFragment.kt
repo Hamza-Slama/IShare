@@ -9,10 +9,6 @@ import android.view.ViewGroup
 import ia2.moduleproject.eniso.ishare.R
 
 
-/**
- * Created by User on 5/28/2017.
- */
-
 class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
