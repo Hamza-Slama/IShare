@@ -10,31 +10,20 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import ia2.moduleproject.eniso.ishare.R
 import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 import android.widget.ProgressBar
-import kotlinx.android.synthetic.main.activity_profile.*
 import android.content.Intent
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.GridLayoutManager
+
 import android.widget.ImageView
 import ia2.moduleproject.eniso.ishare.Utils.GridImageAdapter
 import android.widget.GridView
-import com.android.volley.*
-import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.nostra13.universalimageloader.core.ImageLoader
-import ia2.moduleproject.eniso.ishare.Adapter.LostAdapter
-import ia2.moduleproject.eniso.ishare.Model.Lost
+
 import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
-import kotlinx.android.synthetic.main.activity_home.*
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.UnsupportedEncodingException
+
 
 
 class ProfileActivity : AppCompatActivity() {
 
-    var costomAdapter: LostAdapter?=null
-    private val lostList = ArrayList<Lost>()
+
 
 
 
@@ -63,10 +52,7 @@ class ProfileActivity : AppCompatActivity() {
 
       //  loadLost()
 
-//        var layoutManager = GridLayoutManager(this@ProfileActivity,3)
-//        recycler_view.layoutManager = layoutManager
-//        costomAdapter = LostAdapter(lostList)
-//        recycler_view.adapter = costomAdapter
+
     }
 
 
