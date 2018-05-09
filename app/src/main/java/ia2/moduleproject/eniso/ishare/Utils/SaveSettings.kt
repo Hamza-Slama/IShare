@@ -24,12 +24,19 @@ class SaveSettings{
         loadSettings()
     }
 
+    fun saveSettingsName(name : String){
+        val editor = sharedRef!!.edit()
+        editor.putString("name",name)
+        editor.commit()
+    }
+
     fun loadSettings(){
         userID= sharedRef!!.getString("userID","0")
 
         if (userID=="0"){
             val intent=Intent(context,LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+           // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             context!!.startActivity(intent)
         }
     }
@@ -37,5 +44,6 @@ class SaveSettings{
 
     companion object {
         var userID=""
+        var userName=""
     }
 }

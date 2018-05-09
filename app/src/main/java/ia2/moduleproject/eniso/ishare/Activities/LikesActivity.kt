@@ -17,6 +17,7 @@ import ia2.moduleproject.eniso.ishare.R
 import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 import ia2.moduleproject.eniso.ishare.Utils.Operations
 import ia2.moduleproject.eniso.ishare.Utils.SaveSettings
+import ia2.moduleproject.eniso.ishare.Utils.localhost
 import kotlinx.android.synthetic.main.add_ticket.*
 import org.json.JSONObject
 import java.net.URLEncoder
@@ -43,7 +44,7 @@ class LikesActivity : AppCompatActivity() {
 
         iv_post.setOnClickListener {
         val postText = URLEncoder.encode(etPost.text.toString(),"utf-8")
-        val url="http://192.168.1.64/IshareServer/TweetAdd.php?user_id=" + SaveSettings.userID  +"&tweet_text=" + postText +"&tweet_picture="+ DownloadURL
+            val url= localhost +"/IshareServer/TweetAdd.php?user_id=" + SaveSettings.userID  +"&tweet_text=" + postText +"&tweet_picture="+ DownloadURL
         MyAsyncTask().execute(url)
         }
        setupBottomNavigationView()

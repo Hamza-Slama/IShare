@@ -21,22 +21,24 @@
         </activity>
         <activity android:name=".Activities.SpalshScreen">
 
-
-            </activity>
-        <activity android:name=".Activities.LikesActivity" />
-        <activity android:name=".Activities.ProfileActivity" />
-        <activity android:name=".Activities.SearchActivity" />
-        <!-- <activity android:name=".Activities.ShareActivity"></activity> -->
-        <activity android:name=".Activities.Home2Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
 
             </intent-filter>
+            </activity>
+        <activity android:name=".Activities.LikesActivity" />
+        <activity android:name=".Activities.ProfileActivity" />
+        <activity android:name=".Activities.SearchActivity" />
+        <!-- <activity android:name=".Activities.ShareActivity"></activity> -->
+        <activity android:name=".Activities.Home2Activity">
+
         </activity>
         <activity android:name=".Activities.AccountSettings" />
-        <activity android:name=".Activities.RegisterActivity"></activity>
+        <activity android:name=".Activities.RegisterActivity">
+
+        </activity>
     </application>
 
 </manifest>

@@ -63,6 +63,21 @@ class SharesAdapter(private val mDataset: ArrayList<SharesModel>) : RecyclerView
                 .crossFade()
                 .into(holder.image_shares)
 
+
+
+        holder.iv_share_like.setOnClickListener {
+        Glide
+                .with(context)
+                .load(R.mipmap.ic_love_red)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.mipmap.ic_love_black)
+                .crossFade()
+                .into(holder.iv_share_like)
+        }
+
+
+
     }
 
     override fun getItemCount(): Int {

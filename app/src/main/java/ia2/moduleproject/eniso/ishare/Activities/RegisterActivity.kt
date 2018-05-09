@@ -1,5 +1,6 @@
 package ia2.moduleproject.eniso.ishare.Activities
 
+import android.app.ProgressDialog
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import ia2.moduleproject.eniso.ishare.R
@@ -16,16 +17,21 @@ import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.android.volley.*
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import ia2.moduleproject.eniso.ishare.Model.SharesModel
 import ia2.moduleproject.eniso.ishare.Utils.Operations
+import ia2.moduleproject.eniso.ishare.Utils.localhost
 import kotlinx.android.synthetic.main.activity_register.*
+import org.json.JSONArray
+import org.json.JSONException
 
 import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.InputStreamReader
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -36,6 +42,7 @@ import java.util.*
 class RegisterActivity : AppCompatActivity() {
 
     var mAuth:FirebaseAuth?=null
+    var activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +59,6 @@ class RegisterActivity : AppCompatActivity() {
 
 
     fun buRegisterEvent(view:View){
-        btn_register.isEnabled=false
         SaveImageInFirebase()
     }
 
@@ -130,7 +136,8 @@ class RegisterActivity : AppCompatActivity() {
         val storgaRef=storage.getReferenceFromUrl("gs://ishare-5b609.appspot.com")
         val df=SimpleDateFormat("ddMMyyHHmmss")
         val dataobj=Date()
-        val imagePath= SplitString(email) + "."+ df.format(dataobj)+ ".jpg"
+        //val imagePath= SplitString(email) + "."+ df.format(dataobj)+ ".jpg"
+        val imagePath= input_username.text.toString() + "."+ df.format(dataobj)+ ".jpg"
         val ImageRef=storgaRef.child("images/"+imagePath )
         ivUserImage.isDrawingCacheEnabled=true
         ivUserImage.buildDrawingCache()
@@ -153,8 +160,9 @@ class RegisterActivity : AppCompatActivity() {
 
             val name =URLEncoder.encode(input_username.text.toString(),"utf-8")
             DownloadURL=URLEncoder.encode(DownloadURL,"utf-8")
-            val url="http://192.168.1.64/IshareServer/Register.php/Register.php?first_name="+ name + "&email="+ input_email.text.toString() +  "&password="+ input_password.text.toString() +"&picture_path="+ DownloadURL
-            MyAsyncTask().execute(url)
+            val url= localhost+"/IshareServer/Register.php?first_name="+ name + "&email="+ input_email.text.toString() +  "&password="+ input_password.text.toString() +"&picture_path="+ DownloadURL
+//            MyAsyncTask().execute(url)
+            register(url)
         }
 
     }
@@ -168,8 +176,13 @@ class RegisterActivity : AppCompatActivity() {
     // CALL HTTP
     inner class MyAsyncTask: AsyncTask<String, String, String>() {
 
+        lateinit var progressDialog: ProgressDialog
         override fun onPreExecute() {
             //Before task started
+            progressDialog = ProgressDialog(activity)
+            progressDialog.setMessage("Downloading Data ...")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
         }
         override fun doInBackground(vararg p0: String?): String {
             try {
@@ -204,12 +217,10 @@ class RegisterActivity : AppCompatActivity() {
 
             }catch (ex:Exception){}
         }
-
         override fun onPostExecute(result: String?) {
-
+            progressDialog.dismiss()
             //after task done
         }
-
 
     }
 
@@ -217,5 +228,79 @@ class RegisterActivity : AppCompatActivity() {
 // Progress Dialog
 
 
+    private fun register(url:String) {
+        lateinit var progressDialog: ProgressDialog
+        progressDialog = ProgressDialog(activity)
+        progressDialog.setMessage("Wait for registring ...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+
+        val jsonObjReq = object : JsonObjectRequest(Method.POST,
+                url, null, Response.Listener { response ->
+            try {
+                Toast.makeText(activity,response.toString(),Toast.LENGTH_SHORT).show()
+                if (response.getString("msg")== "user is added"){
+                    progressDialog.dismiss()
+                    finish()
+
+                }
+
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }, Response.ErrorListener {      progressDialog.dismiss()}) {
+            override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
+                try {
+                    var cacheEntry: Cache.Entry? = HttpHeaderParser.parseCacheHeaders(response)
+                    if (cacheEntry == null) {
+                        cacheEntry = Cache.Entry()
+                    }
+                    val cacheHitButRefreshed = (3 * 60 * 1000).toLong() // in 3 minutes cache will be hit, but also refreshed on background
+                    val cacheExpired = (24 * 60 * 60 * 1000).toLong() // in 24 hours this cache entry expires completely
+                    val now = System.currentTimeMillis()
+                    val softExpire = now + cacheHitButRefreshed
+                    val ttl = now + cacheExpired
+                    cacheEntry.data = response.data
+                    cacheEntry.softTtl = softExpire
+                    cacheEntry.ttl = ttl
+                    var headerValue: String?
+                    headerValue = response.headers["Date"]
+                    if (headerValue != null) {
+                        cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue)
+                    }
+                    headerValue = response.headers["Last-Modified"]
+                    if (headerValue != null) {
+                        cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue)
+                    }
+                    cacheEntry.responseHeaders = response.headers
+                    val jsonString = String(response.data)
+//                            Charset( HttpHeaderParser.parseCharset(response.headers)))
+//                            HttpHeaderParser.parseCacheHeaders(response)
+                    return Response.success(JSONObject(jsonString), cacheEntry)
+                } catch (e: UnsupportedEncodingException) {
+                    return Response.error(ParseError(e))
+                } catch (e: JSONException) {
+                    return Response.error(ParseError(e))
+                }
+
+            }
+
+            override fun deliverResponse(response: JSONObject) {
+                super.deliverResponse(response)
+            }
+
+            override fun deliverError(error: VolleyError) {
+                super.deliverError(error)
+            }
+
+            override fun parseNetworkError(volleyError: VolleyError): VolleyError {
+                return super.parseNetworkError(volleyError)
+            }
+        }
+
+        Volley.newRequestQueue(this).add(jsonObjReq)
+    }
 
 }

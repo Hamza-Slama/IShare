@@ -1,5 +1,6 @@
 package ia2.moduleproject.eniso.ishare.Activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -8,17 +9,27 @@ import android.view.Menu
 import android.view.View
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import ia2.moduleproject.eniso.ishare.R
-import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 import android.widget.ProgressBar
 import android.content.Intent
 
 import android.widget.ImageView
-import ia2.moduleproject.eniso.ishare.Utils.GridImageAdapter
 import android.widget.GridView
+import android.widget.Toast
+import com.android.volley.*
+import com.android.volley.toolbox.HttpHeaderParser
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.nostra13.universalimageloader.core.ImageLoader
+import ia2.moduleproject.eniso.ishare.Adapter.SharesAdapter
+import ia2.moduleproject.eniso.ishare.Model.SharesModel
+import ia2.moduleproject.eniso.ishare.Utils.*
+import kotlinx.android.synthetic.main.layout_center_profile.*
+import kotlinx.android.synthetic.main.snippet_top_profile.*
 
-import ia2.moduleproject.eniso.ishare.Utils.UniversalImageLoader
-
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.UnsupportedEncodingException
 
 
 class ProfileActivity : AppCompatActivity() {
@@ -26,12 +37,13 @@ class ProfileActivity : AppCompatActivity() {
 
 
 
+    var ListShares=ArrayList<SharesModel>()
+//    var adpater: SharesAdapter?=null
 
-
-
+    var adapter : GridImageAdapter?=null
     private val TAG = "ProfileActivity"
     private val ACTIVITY_NUM = 3
-
+    var imgURLs = ArrayList<String>()
 
     private val mContext = this@ProfileActivity
     private var mProgressBar: ProgressBar? = null
@@ -42,6 +54,9 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         Log.d(TAG, "onCreate: starting.")
 //        profileProgressBar!!.visibility = View.GONE
+
+
+        loadPost(SaveSettings.userID)
         initImageLoader()
         setupBottomNavigationView()
         setupToolbar()
@@ -49,7 +64,14 @@ class ProfileActivity : AppCompatActivity() {
         setProfileImage()
        tempGridSetup()
 
-
+        var gridView = findViewById<View>(R.id.gridView) as GridView
+        var gridWidth = resources.displayMetrics.widthPixels
+        var imageWidth = gridWidth/NUM_GRID_COLUMNS
+        gridView.columnWidth=imageWidth
+       adapter = GridImageAdapter(mContext, R.layout.layout_grid_imageview, "", imgURLs)
+        gridView.adapter = adapter
+        val npost = imgURLs.size
+        tvPosts.text= npost.toString()
       //  loadLost()
 
 
@@ -60,31 +82,37 @@ class ProfileActivity : AppCompatActivity() {
 
 
     private fun tempGridSetup() {
-        val imgURLs = ArrayList<String>()
+        ListShares.clear()
+      //  Toast.makeText(applicationContext,ListShares[1].sharesImageURL!!,Toast.LENGTH_SHORT).show()
+        for ( i in 0 ..ListShares.size-1){
+
+            imgURLs.add((ListShares.get(i).sharesImageURL!!))
+            adapter!!.notifyDataSetChanged()
+        }
 //        imgURLs.add("https://pbs.twimg.com/profile_images/616076655547682816/6gMRtQyY.jpg")
-        imgURLs.add("https://i.redd.it/9bf67ygj710z.jpg")
-        imgURLs.add("https://c1.staticflickr.com/5/4276/34102458063_7be616b993_o.jpg")
-        imgURLs.add("http://i.imgur.com/EwZRpvQ.jpg")
-        imgURLs.add("http://i.imgur.com/JTb2pXP.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
-        imgURLs.add("https://i.redd.it/pwduhknig00z.jpg")
-        imgURLs.add("https://i.redd.it/clusqsm4oxzy.jpg")
-        imgURLs.add("https://i.redd.it/svqvn7xs420z.jpg")
-        imgURLs.add("http://i.imgur.com/j4AfH6P.jpg")
-        imgURLs.add("https://i.redd.it/89cjkojkl10z.jpg")
-        imgURLs.add("https://i.redd.it/aw7pv8jq4zzy.jpg")
+//        imgURLs.add("https://i.redd.it/9bf67ygj710z.jpg")
+//        imgURLs.add("https://c1.staticflickr.com/5/4276/34102458063_7be616b993_o.jpg")
+//        imgURLs.add("http://i.imgur.com/EwZRpvQ.jpg")
+//        imgURLs.add("http://i.imgur.com/JTb2pXP.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/59kjlxxf720z.jpg")
+//        imgURLs.add("https://i.redd.it/pwduhknig00z.jpg")
+//        imgURLs.add("https://i.redd.it/clusqsm4oxzy.jpg")
+//        imgURLs.add("https://i.redd.it/svqvn7xs420z.jpg")
+//        imgURLs.add("http://i.imgur.com/j4AfH6P.jpg")
+//        imgURLs.add("https://i.redd.it/89cjkojkl10z.jpg")
+//        imgURLs.add("https://i.redd.it/aw7pv8jq4zzy.jpg")
 
         setupImageGrid(imgURLs)
     }
@@ -102,8 +130,16 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setProfileImage() {
         Log.d(TAG, "setProfileImage: setting profile photo.")
-        val imgURL = "www.androidcentral.com/sites/androidcentral.com/files/styles/xlarge/public/article_images/2016/08/ac-lloyd.jpg?itok=bb72IeLf"
-        UniversalImageLoader.setImage(imgURL, profilePhoto!!, mProgressBar, "https://")
+        var imgURL=""
+        if (ListShares.size!=0){
+            display_name.text=ListShares.get(0).personName
+             imgURL = ListShares.get(0).personImage!!
+        }else{
+             imgURL = "https://"+"www.androidcentral.com/sites/androidcentral.com/files/styles/xlarge/public/article_images/2016/08/ac-lloyd.jpg?itok=bb72IeLf"
+        }
+
+
+        UniversalImageLoader.setImage(imgURL!!, profilePhoto!!, mProgressBar, "")
     }
 
     private fun setupActivityWidgets() {
@@ -147,97 +183,102 @@ class ProfileActivity : AppCompatActivity() {
 
 
 
+    private fun loadPost(userid:String) {
+        val url= localhost +"/IshareServer/TweetList.php?op=2&user_id="+userid+"&StartFrom=0"
+        lateinit var progressDialog: ProgressDialog
 
-//    private fun loadLost() {
-//        val url2 = "http://api.tvmaze.com/singlesearch/shows?q=lost&embed=episodes"
-//
-//
-//        val jsonObjReq = object : JsonObjectRequest(Method.GET,
-//                url2, null, Response.Listener { response ->
-//            try {
-//                println("------------------------------------------------------------------- response = "+response)
-//                val emedded = response.getJSONObject("_embedded")
-//                val episodes = emedded.getJSONArray("episodes")
-//                for (i in 0 until episodes.length()) {
-//
-//                    val episode = episodes.getJSONObject(i)
-//                    val name = episode.getString("name")
-//                    Log.i("Provera Object", name)
-//
-//                    val image = episode.getJSONObject("image")
-//                    val imageMedium = image.getString("medium")
-//                    Log.i("Provera Object", imageMedium.toString())
-//
-//                    val id = episode.getInt("id")
-//                    Log.i("Provera Object", id.toString())
-//
-//                    val url = episode.getString("url")
-//                    Log.i("Provera Object", url)
-//
-//                    val season = episode.getInt("season")
-//                    Log.i("Provera Object", season.toString())
-//
-//                    val lostItem = Lost(name, imageMedium, id)
-//                    lostList.add(lostItem)
-//                    costomAdapter!!.notifyDataSetChanged()
-//
-//
-//                }
-//            } catch (e: JSONException) {
-//                e.printStackTrace()
-//            }
-//        }, Response.ErrorListener { }) {
-//            override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
-//                try {
-//                    var cacheEntry: Cache.Entry? = HttpHeaderParser.parseCacheHeaders(response)
-//                    if (cacheEntry == null) {
-//                        cacheEntry = Cache.Entry()
-//                    }
-//                    val cacheHitButRefreshed = (3 * 60 * 1000).toLong() // in 3 minutes cache will be hit, but also refreshed on background
-//                    val cacheExpired = (24 * 60 * 60 * 1000).toLong() // in 24 hours this cache entry expires completely
-//                    val now = System.currentTimeMillis()
-//                    val softExpire = now + cacheHitButRefreshed
-//                    val ttl = now + cacheExpired
-//                    cacheEntry.data = response.data
-//                    cacheEntry.softTtl = softExpire
-//                    cacheEntry.ttl = ttl
-//                    var headerValue: String?
-//                    headerValue = response.headers["Date"]
-//                    if (headerValue != null) {
-//                        cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue)
-//                    }
-//                    headerValue = response.headers["Last-Modified"]
-//                    if (headerValue != null) {
-//                        cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue)
-//                    }
-//                    cacheEntry.responseHeaders = response.headers
-//                    val jsonString = String(response.data)
-////                            Charset( HttpHeaderParser.parseCharset(response.headers)))
-////                            HttpHeaderParser.parseCacheHeaders(response)
-//                    return Response.success(JSONObject(jsonString), cacheEntry)
-//                } catch (e: UnsupportedEncodingException) {
-//                    return Response.error(ParseError(e))
-//                } catch (e: JSONException) {
-//                    return Response.error(ParseError(e))
-//                }
-//
-//            }
-//
-//            override fun deliverResponse(response: JSONObject) {
-//                super.deliverResponse(response)
-//            }
-//
-//            override fun deliverError(error: VolleyError) {
-//                super.deliverError(error)
-//            }
-//
-//            override fun parseNetworkError(volleyError: VolleyError): VolleyError {
-//                return super.parseNetworkError(volleyError)
-//            }
-//        }
-//
-//        Volley.newRequestQueue(this).add(jsonObjReq)
-//    }
+
+            progressDialog = ProgressDialog(mContext)
+            progressDialog.setMessage("Uploading Data ...")
+            progressDialog.setCancelable(false)
+
+        val jsonObjReq = object : JsonObjectRequest(Method.POST,
+                url, null, Response.Listener { response ->
+            try {
+                // Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext,response.getString("msg"), Toast.LENGTH_LONG).show()
+                if ( response.getString("msg")=="has tweet"){
+                    progressDialog.show()
+                    ListShares.clear()
+                    val tweets = JSONArray(response.getString("info"))
+                    for (i in 0..tweets.length()-1){
+                        val singleTweet= tweets.getJSONObject(i)
+                        println(singleTweet)
+                        ListShares.add(SharesModel(singleTweet.getString("tweet_id"),singleTweet.getString("tweet_text"),
+                                singleTweet.getString("tweet_picture"),singleTweet.getString("tweet_date")
+                                ,singleTweet.getString("first_name"),singleTweet.getString("picture_path"),
+                                singleTweet.getString("user_id")))
+                         adapter!!.notifyDataSetChanged()
+
+
+                    }
+
+                    for ( i in 0 ..ListShares.size-1){
+
+                        imgURLs.add((ListShares.get(i).sharesImageURL!!))
+                        adapter!!.notifyDataSetChanged()
+                    }
+                    setProfileImage()
+                    val npost = imgURLs.size
+                    tvPosts.text= npost.toString()
+                    progressDialog.dismiss()
+                }
+
+            } catch (e: JSONException) {
+                e.printStackTrace()
+            }
+        }, Response.ErrorListener { progressDialog.dismiss()}) {
+            override fun parseNetworkResponse(response: NetworkResponse): Response<JSONObject> {
+                try {
+                    var cacheEntry: Cache.Entry? = HttpHeaderParser.parseCacheHeaders(response)
+                    if (cacheEntry == null) {
+                        cacheEntry = Cache.Entry()
+                    }
+                    val cacheHitButRefreshed = (3 * 60 * 1000).toLong() // in 3 minutes cache will be hit, but also refreshed on background
+                    val cacheExpired = (24 * 60 * 60 * 1000).toLong() // in 24 hours this cache entry expires completely
+                    val now = System.currentTimeMillis()
+                    val softExpire = now + cacheHitButRefreshed
+                    val ttl = now + cacheExpired
+                    cacheEntry.data = response.data
+                    cacheEntry.softTtl = softExpire
+                    cacheEntry.ttl = ttl
+                    var headerValue: String?
+                    headerValue = response.headers["Date"]
+                    if (headerValue != null) {
+                        cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue)
+                    }
+                    headerValue = response.headers["Last-Modified"]
+                    if (headerValue != null) {
+                        cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue)
+                    }
+                    cacheEntry.responseHeaders = response.headers
+                    val jsonString = String(response.data)
+//                            Charset( HttpHeaderParser.parseCharset(response.headers)))
+//                            HttpHeaderParser.parseCacheHeaders(response)
+                    return Response.success(JSONObject(jsonString), cacheEntry)
+                } catch (e: UnsupportedEncodingException) {
+                    return Response.error(ParseError(e))
+                } catch (e: JSONException) {
+                    return Response.error(ParseError(e))
+                }
+
+            }
+
+            override fun deliverResponse(response: JSONObject) {
+                super.deliverResponse(response)
+            }
+
+            override fun deliverError(error: VolleyError) {
+                super.deliverError(error)
+            }
+
+            override fun parseNetworkError(volleyError: VolleyError): VolleyError {
+                return super.parseNetworkError(volleyError)
+            }
+        }
+
+        Volley.newRequestQueue(this).add(jsonObjReq)
+    }
 private fun initImageLoader() {
     val universalImageLoader = UniversalImageLoader(mContext)
     ImageLoader.getInstance().init(universalImageLoader.config)

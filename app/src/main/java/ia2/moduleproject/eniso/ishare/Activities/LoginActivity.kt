@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream
 
 import android.os.AsyncTask
 import ia2.moduleproject.eniso.ishare.Utils.SaveSettings
+import ia2.moduleproject.eniso.ishare.Utils.localhost
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -51,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
 //            }
 
          //   val url = "http://192.168.1.64/IshareServer/Login.php?email=c@yahoo.com&password=1234567"
-            val url="http://192.168.1.64/IshareServer/Login.php?email=" + user.text.toString() +"&password="+ pass.text.toString()
+            val url= localhost +"/IshareServer/Login.php?email=" + user.text.toString() +"&password="+ pass.text.toString()
             MyAsyncTask().execute(url)
         }
 
@@ -199,6 +200,7 @@ inner class MyAsyncTask: AsyncTask<String, String, String>() {
                 val user_id= userCredentails.getString("user_id")
                 val saveSettings= SaveSettings(applicationContext)
                 saveSettings.saveSettings(user_id)
+                saveSettings.saveSettingsName(userCredentails.getString("first_name"))
                 val intent = Intent(activity,Home2Activity::class.java)
                 startActivity(intent)
 
