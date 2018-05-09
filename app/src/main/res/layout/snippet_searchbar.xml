@@ -27,8 +27,12 @@
                     android:layout_marginStart="5dp"
                     android:id="@+id/search"
                     android:background="@null"/>
-
-
+<Button
+    android:id="@+id/click_search"
+    android:layout_alignParentRight="true"
+    android:layout_width="50dp"
+    android:background="@drawable/ic_search"
+    android:layout_height="wrap_content" />
 
             </RelativeLayout>
 

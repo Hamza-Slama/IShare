@@ -13,12 +13,15 @@ import com.android.volley.toolbox.HttpHeaderParser
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+import ia2.moduleproject.eniso.ishare.Adapter.SearchAdapter
 import ia2.moduleproject.eniso.ishare.Adapter.SharesAdapter
 import ia2.moduleproject.eniso.ishare.Model.SharesModel
+import ia2.moduleproject.eniso.ishare.Model.UserInfo
 import ia2.moduleproject.eniso.ishare.R
 import ia2.moduleproject.eniso.ishare.Utils.BottomNavigationViewHelper
 import ia2.moduleproject.eniso.ishare.Utils.localhost
 import kotlinx.android.synthetic.main.activity_home2.*
+import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.snippet_searchbar.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -30,37 +33,42 @@ class SearchActivity : AppCompatActivity() {
     private val TAG = "SearchActivity"
     private val ACTIVITY_NUM = 2
 
-    var ListUserInfoSearch=ArrayList<SharesModel>()
-    var adpater: SharesAdapter?=null
+    var ListUserInfoSearch=ArrayList<UserInfo>()
+    var adpater: SearchAdapter?=null
     private val mContext = this@SearchActivity
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home2)
+        setContentView(R.layout.activity_search)
         Log.d(TAG, "onCreate: starting.")
 
         setupBottomNavigationView()
-        search.addTextChangedListener(
-                object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-                    }
-
-                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-                    }
-
-                    override fun afterTextChanged(s: Editable) {
-
-                        val text = search.text.toString().toLowerCase(Locale.getDefault())
-                        searchForMatch(text)
-                    }
-                })
+//        search.addTextChangedListener(
+//                object : TextWatcher {
+//                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+//
+//                    }
+//
+//                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//
+//                    }
+//
+//                    override fun afterTextChanged(s: Editable) {
+//
+//                        val text = search.text.toString().toLowerCase(Locale.getDefault())
+//                        searchForMatch(text)
+//                    }
+//                })
+        click_search.setOnClickListener {
+            val text = search.text.toString()
+            searchForMatch(text) }
 
         var layoutManager = LinearLayoutManager(mContext)
-        recycler_view_viewpager.layoutManager = layoutManager
-        adpater = SharesAdapter(ListUserInfoSearch)
-        recycler_view_viewpager.adapter = adpater
+        recycler_search.layoutManager = layoutManager
+        adpater = SearchAdapter(ListUserInfoSearch)
+        recycler_search.adapter = adpater
+
     }
 //
 //fun searchForMatch(text : String){
@@ -80,25 +88,23 @@ class SearchActivity : AppCompatActivity() {
         menuItem.isChecked = true
     }
 
-    private fun searchForMatch(userid:String) {
+    private fun searchForMatch(nameSearch:String) {
         //http://localhost/IshareServer/TweetList.php?op=4&user_name=
-        val url= localhost +"/IshareServer/TweetList.php?op=4&user_name="+userid
+        val url= localhost +"/IshareServer/TweetList.php?op=4&user_name="+"\""+nameSearch+"\""
 
-
+        Toast.makeText(applicationContext,"response.toString()",Toast.LENGTH_LONG).show()
         val jsonObjReq = object : JsonObjectRequest(Method.POST,
                 url, null, Response.Listener { response ->
             try {
-                // Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
+                 Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
+                 Toast.makeText(applicationContext,"test",Toast.LENGTH_LONG).show()
                 Toast.makeText(applicationContext,response.getString("msg"), Toast.LENGTH_LONG).show()
                 if ( response.getString("msg")=="has tweet"){
                     ListUserInfoSearch.clear()
                     val userinfo = JSONArray(response.getString("info"))
                     for (i in 0..userinfo.length()-1){
                         val singleTweet= userinfo.getJSONObject(i)
-                        ListUserInfoSearch.add(SharesModel(singleTweet.getString("tweet_id"),singleTweet.getString("tweet_text"),
-                                singleTweet.getString("tweet_picture"),singleTweet.getString("tweet_date")
-                                ,singleTweet.getString("first_name"),singleTweet.getString("picture_path"),
-                                singleTweet.getString("user_id")))
+                        ListUserInfoSearch.add(UserInfo(singleTweet.getString("user_id"),singleTweet.getString("first_name"), singleTweet.getString("email"), singleTweet.getString("picture_path")))
                         adpater!!.notifyDataSetChanged()
 
                     }

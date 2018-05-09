@@ -54,8 +54,15 @@ class ProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_profile)
         Log.d(TAG, "onCreate: starting.")
 //        profileProgressBar!!.visibility = View.GONE
-
-
+val intent = getIntent()
+if (intent.hasExtra("call activity") ){
+    val bundle = intent.extras
+    val user_id = bundle.getString("user_id")
+    loadPost(user_id)
+    val picture_path= bundle.getString("picture_path")
+    val first_name = bundle.getString("first_name")
+    display_name.text=first_name
+}
         loadPost(SaveSettings.userID)
         initImageLoader()
         setupBottomNavigationView()
