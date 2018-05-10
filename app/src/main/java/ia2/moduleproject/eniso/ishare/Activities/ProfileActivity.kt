@@ -198,7 +198,7 @@ private fun updateFollowing(op:String , user_following: String){
 //    val url = localhost + "IshareServer/UserFollowing.php?op="+op+"&user_id="+SaveSettings.userID+"&following_user_id="+user_following
     var url = localhost + "/IshareServer/UserFollowing.php?op="+op+"&user_id="+SaveSettings.userID+"&following_user_id="+user_following
     println(url)
-    Toast.makeText(mContext,url,Toast.LENGTH_SHORT).show()
+  //  Toast.makeText(mContext,url,Toast.LENGTH_SHORT).show()
     lateinit var progressDialog: ProgressDialog
 
 
@@ -206,13 +206,13 @@ private fun updateFollowing(op:String , user_following: String){
     progressDialog.setMessage("Uploading Data ...")
     progressDialog.setCancelable(false)
 
-Toast.makeText(mContext,"test",Toast.LENGTH_SHORT).show()
+//Toast.makeText(mContext,"test",Toast.LENGTH_SHORT).show()
     val jsonObjReq = object : JsonObjectRequest(Method.POST,
             url, null, Response.Listener { response ->
         try {
             progressDialog.show()
 
-             Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
+             //Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
             if (response.getString("msg") == "following") {
                 Toast.makeText(mContext,response.getString("msg"),Toast.LENGTH_SHORT).show()
                 progressDialog.dismiss()

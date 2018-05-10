@@ -27,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
 //        saveSettings.loadSettings()
 
         setContentView(R.layout.activity_home)
+        
 //        loadLost()
 //
 ////        var layoutManager = GridLayoutManager(this@HomeActivity,3)

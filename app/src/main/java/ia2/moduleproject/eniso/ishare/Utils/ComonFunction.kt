@@ -8,5 +8,6 @@ fun SplitString(email:String):String{
     return split[0]
 }
 
-//val localhost = "http://192.168.14.5"
-val localhost = "http://192.168.1.64"
+val localhost = "http://192.168.14.5"
+
+//val localhost = "http://192.168.1.64"
