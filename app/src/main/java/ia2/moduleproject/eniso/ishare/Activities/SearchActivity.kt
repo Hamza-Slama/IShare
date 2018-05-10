@@ -92,13 +92,10 @@ class SearchActivity : AppCompatActivity() {
         //http://localhost/IshareServer/TweetList.php?op=4&user_name=
         val url= localhost +"/IshareServer/TweetList.php?op=4&user_name="+"\""+nameSearch+"\""
 
-        Toast.makeText(applicationContext,"response.toString()",Toast.LENGTH_LONG).show()
+
         val jsonObjReq = object : JsonObjectRequest(Method.POST,
                 url, null, Response.Listener { response ->
             try {
-                 Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
-                 Toast.makeText(applicationContext,"test",Toast.LENGTH_LONG).show()
-                Toast.makeText(applicationContext,response.getString("msg"), Toast.LENGTH_LONG).show()
                 if ( response.getString("msg")=="has tweet"){
                     ListUserInfoSearch.clear()
                     val userinfo = JSONArray(response.getString("info"))

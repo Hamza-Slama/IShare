@@ -94,88 +94,13 @@ class Home2Activity : AppCompatActivity() {
 
 
 
-//    inner class MyAsyncTask: AsyncTask<String, String, String>() {
-//
-//       // lateinit var progressDialog: ProgressDialog
-//        override fun onPreExecute() {
-//            //Before task started
-//        //    progressDialog = ProgressDialog(mContext)
-//        //    progressDialog.setMessage("Uploading Data ...")
-//         //   progressDialog.setCancelable(false)
-//         //   progressDialog.show()
-//        }
-//        override fun doInBackground(vararg p0: String?): String {
-//            try {
-//
-//                val url= URL(p0[0])
-//
-//                val urlConnect=url.openConnection() as HttpURLConnection
-//                urlConnect.connectTimeout=7000
-//
-//                val op= Operations()
-//
-//                var inString= op.ConvertStreamToString(urlConnect.inputStream)
-//                //Cannot access to ui
-//                publishProgress(inString)
-//            }catch (ex:Exception){}
-//
-//
-//            return " "
-//
-//        }
-//
-//        override fun onProgressUpdate(vararg values: String?) {
-//            try{
-//                var json= JSONObject(values[0])
-//                Toast.makeText(applicationContext,json.getString("msg"),Toast.LENGTH_LONG).show()
-//
-//
-//               if ( json.getString("msg")=="has tweet"){
-//                  //  ListTweets.clear()
-//                  //  ListTweets.add(Ticket("0","him","url","add","","",""))
-//
-//
-//                    // get tweets
-//                    val tweets = JSONArray(json.getString("info"))
-//                    for (i in 0..tweets.length()-1){
-//                        val singleTweet= tweets.getJSONObject(i)
-//                        ListShares.add(SharesModel(singleTweet.getString("tweet_id"),singleTweet.getString("tweet_text"),
-//                                singleTweet.getString("tweet_picture"),singleTweet.getString("tweet_date")
-//                                ,singleTweet.getString("first_name"),singleTweet.getString("picture_path"),
-//                                singleTweet.getString("user_id")))
-//
-//                    }
-//                }else if ( json.getString("msg")=="no tweets"){
-////                    ListTweets.clear()
-////                    ListTweets.add(Ticket("0","him","url","add","","",""))
-//
-//                }
-//
-//
-//
-//                adpater!!.notifyDataSetChanged()
-//
-//            }catch (ex:Exception){}
-//        }
-//
-//        override fun onPostExecute(result: String?) {
-//          //  progressDialog.dismiss()
-//            //after task done
-//        }
-//
-//
-//    }
-
-
     private fun loadPost(userid:String) {
-        val url= localhost+"/IshareServer/TweetList.php?op=2&user_id="+userid+"&StartFrom=0"
+        val url= localhost+"/IshareServer/TweetList.php?op=1&user_id="+userid+"&StartFrom=0"
 
 
         val jsonObjReq = object : JsonObjectRequest(Method.POST,
                 url, null, Response.Listener { response ->
             try {
-               // Toast.makeText(applicationContext,response.toString(),Toast.LENGTH_LONG).show()
-                Toast.makeText(applicationContext,response.getString("msg"),Toast.LENGTH_LONG).show()
                 if ( response.getString("msg")=="has tweet"){
                     ListShares.clear()
                     val tweets = JSONArray(response.getString("info"))

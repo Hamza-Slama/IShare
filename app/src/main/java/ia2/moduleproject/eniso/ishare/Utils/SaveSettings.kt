@@ -29,9 +29,16 @@ class SaveSettings{
         editor.putString("name",name)
         editor.commit()
     }
+    fun saveSettingsPicture_path(picturepath : String){
+        val editor = sharedRef!!.edit()
+        editor.putString("picture_path",picturepath)
+        editor.commit()
+    }
 
     fun loadSettings(){
         userID= sharedRef!!.getString("userID","0")
+        userName= sharedRef!!.getString("name","0")
+        picture_path= sharedRef!!.getString("picture_path","0")
 
         if (userID=="0"){
             val intent=Intent(context,LoginActivity::class.java)
@@ -45,5 +52,6 @@ class SaveSettings{
     companion object {
         var userID=""
         var userName=""
+        var picture_path=""
     }
 }

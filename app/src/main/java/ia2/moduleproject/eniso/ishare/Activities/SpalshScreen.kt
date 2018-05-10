@@ -12,7 +12,11 @@ class SpalshScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_spalsh_screen)
         Handler().postDelayed({
-            Intent(this, Home2Activity::class.java).apply {
+//            Intent(this, Home2Activity::class.java).apply {
+//                setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                //addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                startActivity(this)
+            Intent(this, LoginActivity::class.java).apply {
                 setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 //addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(this)

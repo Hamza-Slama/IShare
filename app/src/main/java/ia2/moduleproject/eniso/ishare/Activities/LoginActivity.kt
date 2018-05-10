@@ -194,13 +194,15 @@ inner class MyAsyncTask: AsyncTask<String, String, String>() {
                 val userInfo =JSONArray(json.getString("info"))
                 val userCredentails= userInfo.getJSONObject(0)
 
-                Toast.makeText(applicationContext,userCredentails.getString("first_name"), Toast.LENGTH_LONG).show()
-                Toast.makeText(applicationContext,userCredentails.toString(), Toast.LENGTH_LONG).show()
-
+                Toast.makeText(applicationContext,"Hello "+userCredentails.getString("first_name"), Toast.LENGTH_LONG).show()
+                val picture_path = userCredentails.getString("picture_path")
                 val user_id= userCredentails.getString("user_id")
                 val saveSettings= SaveSettings(applicationContext)
-                saveSettings.saveSettings(user_id)
+
                 saveSettings.saveSettingsName(userCredentails.getString("first_name"))
+                saveSettings.saveSettingsPicture_path(picture_path)
+                saveSettings.saveSettings(user_id)
+
                 val intent = Intent(activity,Home2Activity::class.java)
                 startActivity(intent)
 

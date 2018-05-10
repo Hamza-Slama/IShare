@@ -207,7 +207,7 @@ class RegisterActivity : AppCompatActivity() {
         override fun onProgressUpdate(vararg values: String?) {
             try{
                 var json=JSONObject(values[0])
-                Toast.makeText(applicationContext,json.getString("msg"),Toast.LENGTH_LONG).show()
+//                Toast.makeText(applicationContext,json.getString("msg"),Toast.LENGTH_LONG).show()
 
                 if (json.getString("msg")== "user is added"){
                     finish()

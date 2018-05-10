@@ -36,7 +36,6 @@ class LikesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_ticket)
-        Toast.makeText(mContext,SaveSettings.userID,Toast.LENGTH_SHORT).show()
         Log.d(TAG, "onCreate: starting.")
         iv_attach.setOnClickListener {
             loadImage()
@@ -107,7 +106,7 @@ class LikesActivity : AppCompatActivity() {
 
             DownloadURL= taskSnapshot.downloadUrl!!.toString()
             DownloadURL= URLEncoder.encode(DownloadURL,"utf-8")
-            Toast.makeText(mContext,DownloadURL,Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext,"Photo Aded",Toast.LENGTH_SHORT).show()
             progressDialog.dismiss()
           //  ListTweets.removeAt(0)
             //adpater!!.notifyDataSetChanged()
@@ -171,7 +170,7 @@ class LikesActivity : AppCompatActivity() {
         override fun onProgressUpdate(vararg values: String?) {
             try{
                 var json= JSONObject(values[0])
-                Toast.makeText(applicationContext,json.getString("msg"),Toast.LENGTH_LONG).show()
+
 
 
                 if (json.getString("msg")== "tweet is added"){
