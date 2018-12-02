@@ -25,12 +25,12 @@ import org.json.JSONObject
 import java.io.UnsupportedEncodingException
 
 
-class Home2Activity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private val TAG = "HomeActivity"
     private val ACTIVITY_NUM = 0
 
-    private val mContext = this@Home2Activity
+    private val mContext = this@HomeActivity
 //    var costomAdapter: LostAdapter?=null
 //    private val lostList = ArrayList<Lost>()
 
@@ -58,7 +58,7 @@ class Home2Activity : AppCompatActivity() {
 //        loadPost()
         //testloading()
 
-        var layoutManager = LinearLayoutManager(this@Home2Activity)
+        var layoutManager = LinearLayoutManager(this@HomeActivity)
         recycler_view_viewpager.layoutManager = layoutManager
         adpater = SharesAdapter(ListShares)
         recycler_view_viewpager.adapter = adpater
