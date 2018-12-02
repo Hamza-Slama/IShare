@@ -173,37 +173,12 @@ class LikesActivity : AppCompatActivity() {
 
 
                 if (json.getString("msg")== "tweet is added"){
-                   // DownloadURL="noImage"
-                    val intent=Intent(mContext,Home2Activity::class.java)
+                    val intent=Intent(mContext,HomeActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     mContext!!.startActivity(intent)
 
-                  //  ListTweets.removeAt(0)
-                  //  adpater!!.notifyDataSetChanged()
-//                }else if ( json.getString("msg")=="has tweet"){
-//                  //  ListTweets.clear()
-//                  //  ListTweets.add(Ticket("0","him","url","add","","",""))
-//
-//
-//                    // get tweets
-//                    val tweets = JSONArray(json.getString("info"))
-//                    for (i in 0..tweets.length()-1){
-//                        val singleTweet= tweets.getJSONObject(i)
-//                        ListTweets.add(Ticket(singleTweet.getString("tweet_id"),singleTweet.getString("tweet_text"),
-//                                singleTweet.getString("tweet_picture"),singleTweet.getString("tweet_date")
-//                                ,singleTweet.getString("first_name"),singleTweet.getString("picture_path"),
-//                                singleTweet.getString("user_id")))
-//
-//                    }
-//                }else if ( json.getString("msg")=="no tweets"){
-////                    ListTweets.clear()
-////                    ListTweets.add(Ticket("0","him","url","add","","",""))
 
                 }
-
-
-
-//                adpater!!.notifyDataSetChanged()
 
             }catch (ex:Exception){}
         }

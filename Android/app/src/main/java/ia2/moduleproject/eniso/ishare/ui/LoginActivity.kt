@@ -202,7 +202,7 @@ inner class MyAsyncTask: AsyncTask<String, String, String>() {
                 saveSettings.saveSettingsPicture_path(picture_path)
                 saveSettings.saveSettings(user_id)
 
-                val intent = Intent(activity,Home2Activity::class.java)
+                val intent = Intent(activity,HomeActivity::class.java)
                 startActivity(intent)
 
                 finish()

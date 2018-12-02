@@ -33,3 +33,30 @@ class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
 }
+
+/**
+ * Class that stores fragments for tabs
+ */
+class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
+    private val mFragmentList = ArrayList<Fragment>()
+
+    override fun getItem(position: Int): Fragment {
+        return mFragmentList[position]
+    }
+
+
+    override fun getCount(): Int {
+        return mFragmentList.size
+    }
+
+    fun addFragment(fragment: Fragment) {
+        mFragmentList.add(fragment)
+    }
+
+    companion object {
+
+        private val TAG = "SectionsPagerAdapter"
+    }
+
+}

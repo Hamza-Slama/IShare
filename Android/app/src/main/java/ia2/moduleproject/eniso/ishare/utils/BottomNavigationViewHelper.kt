@@ -6,7 +6,7 @@ import android.util.Log
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 
-import ia2.moduleproject.eniso.ishare.ui.Home2Activity
+import ia2.moduleproject.eniso.ishare.ui.HomeActivity
 import ia2.moduleproject.eniso.ishare.ui.LikesActivity
 import ia2.moduleproject.eniso.ishare.ui.ProfileActivity
 import ia2.moduleproject.eniso.ishare.ui.SearchActivity
@@ -36,7 +36,7 @@ object BottomNavigationViewHelper {
             when (item.itemId) {
 
                 R.id.ic_house -> {
-                    val intent1 = Intent(context, Home2Activity::class.java)//ACTIVITY_NUM = 0
+                    val intent1 = Intent(context, HomeActivity::class.java)//ACTIVITY_NUM = 0
                     context.startActivity(intent1)
                 }
 
