@@ -10,7 +10,6 @@ picture_path varchar(350)
 );
 
 describe login;
---tweets
 create table shares(
 
  user_id int,
