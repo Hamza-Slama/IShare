@@ -51,7 +51,7 @@
 
         </RelativeLayout>
 
-        <ia2.moduleproject.eniso.ishare.Utils.SqaureImageView
+        <ia2.moduleproject.eniso.ishare.utils.SqaureImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/post_image"

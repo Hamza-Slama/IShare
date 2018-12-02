@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
-    tools:context="ia2.moduleproject.eniso.ishare.Activities.HomeActivity">
+    tools:context="ia2.moduleproject.eniso.ishare.ui.HomeActivity">
 
     <LinearLayout
         android:id="@+id/ln_ishare"
