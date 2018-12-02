@@ -2,7 +2,7 @@
 <?php
 require("DBInfo.inc");
 //Call service to register
-//http://localhost/IshareServer/Login.php?email=c@yahoo.com&password=1234567
+//http://localhost/IshareServer/Login.php?email=hamzaslama8@gmail.com&password=1234567
 $query ="select * from login  where email='" . $_GET['email'] ."' and password='" . $_GET['password'] ."'" ;
 $result= mysqli_query($connect,$query);
 if (!$result){

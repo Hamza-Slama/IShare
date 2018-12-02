@@ -3,7 +3,7 @@
 $host="localhost";
 $user ="root";
 $password="";
-$database ="twitter";
+$database ="IShare";
 $connect = mysqli_connect($host, $user,$password,$database);
 if(mysqli_connect_errno()){
 	
